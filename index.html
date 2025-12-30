@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-063933E3C2"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-063933E3C2");
+    </script>
+    <title>Van Tharp's Marble Game Simulator</title>
+    <link
+      rel="canonical"
+      href="https://evoluteur.github.io/van-tharp-marble-game/"
+    />
+    <meta charset="utf-8" />
+    <meta http-equiv="content-language" content="en" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <meta name="theme-color" content="#bbdefb" />
+    <link href="css/vtmg.css" rel="stylesheet" />
+    <script src="js/vtmg.js"></script>
+    <meta
+      name="keywords"
+      content="van tharp, marble game, risk, reward, position sizing, stocks, trading, trade, portfolio, bet"
+    />
+    <meta
+      name="description"
+      content="Van Tharp's Marble Game Simulator to experiment with position sizing"
+    />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/evoluteur/van-tharp-marble-game/main/marbles-100.png"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Marcellus"
+    />
+  </head>
+
+  <body onload="setup()" id="body">
+    <h1>Van Tharp's marble game</h1>
+    <div class="body">
+      <div>
+        What <strong>position sizing strategy</strong> should you adopt if you
+        had $100K to bet under the following probabilities?
+      </div>
+      <div class="info-proba">
+        <div id="marbles"></div>
+      </div>
+    </div>
+    <div class="params">
+      <div>
+        <input id="amount" type="number" value="20" />
+        <select id="unit">
+          <option value="$">$</option>
+          <option value="%" selected>%</option>
+        </select>
+        <button onclick="javascript:iterate()">Simulate 100 bets</button>
+      </div>
+      <div id="summary"></div>
+    </div>
+
+    <div id="steps"></div>
+    <div id="footer-summary"></div>
+
+    <div class="footer">
+      <p>
+        The marble game was invented by Van K. Tharp to experiment with position
+        sizing strategies. It is explained in his book
+        <a
+          href="https://www.amazon.com/Trading-Beyond-Matrix-Traders-Investors/dp/1118525663"
+          target="amz"
+          >Trading Beyond the Matrix</a
+        >.
+      </p>
+      <p>
+        The code of this page is Open Source at
+        <a
+          href="https://github.com/evoluteur/van-tharp-marble-game"
+          target="og"
+          rel="noopener"
+          >van-tharp-marble-game</a
+        >
+        on GitHub with MIT license.
+      </p>
+      <p>
+        <br />
+        © 2025
+        <a href="https://evoluteur.github.io/" target="og" rel="noopener"
+          >Olivier Giulieri</a
+        >
+      </p>
+    </div>
+  </body>
+</html>
