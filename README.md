@@ -23,4 +23,4 @@ The web page of this project are just plain HTML, CSS, and Javascript (without e
 
 The code for Van-Tharp-Marble-Game is Open Source at [GitHub](https://github.com/evoluteur/van-tharp-marble-game) with [MIT license](LICENSE).
 
-(c) 2025 [Olivier Giulieri](https://evoluteur.github.io/)
+(c) 2026 [Olivier Giulieri](https://evoluteur.github.io/)
