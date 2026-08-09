@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <script
       async
       src="https://www.googletagmanager.com/gtag/js?id=G-063933E3C2"
@@ -25,7 +28,7 @@
     <link rel="icon" type="image/png" href="favicon.png" />
     <meta name="theme-color" content="#bbdefb" />
     <link href="css/vtmg.css" rel="stylesheet" />
-    <script src="js/vtmg.js"></script>
+    <script src="js/vtmg.js" defer></script>
     <meta name="author" content="Olivier Giulieri" />
     <meta name="robots" content="index, follow" />
     <meta
@@ -34,7 +37,7 @@
     />
     <meta
       name="description"
-      content="Simulate Van Tharp's Marble Game to explore position sizing strategies. Experiment with bet sizes, win/loss probabilities, and see how position sizing impacts your trading results over 100 bets."
+      content="Simulate Van Tharp's Marble Game and see how position sizing — not win rate — determines whether $100K grows or blows up over 100 bets."
     />
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -50,8 +53,16 @@
     />
     <meta
       property="og:image"
-      content="https://raw.githubusercontent.com/evoluteur/van-tharp-marble-game/main/screenshot-vtmg.png"
+      content="https://evoluteur.github.io/van-tharp-marble-game/screenshot-vtmg.png"
     />
+    <meta property="og:image:width" content="1310" />
+    <meta property="og:image:height" content="938" />
+    <meta property="og:image:type" content="image/png" />
+    <meta
+      property="og:image:alt"
+      content="Screenshot of the Van Tharp's Marble Game Simulator"
+    />
+    <meta property="og:locale" content="en_US" />
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Van Tharp's Marble Game Simulator — Position Sizing Strategy" />
@@ -61,7 +72,11 @@
     />
     <meta
       name="twitter:image"
-      content="https://raw.githubusercontent.com/evoluteur/van-tharp-marble-game/main/screenshot-vtmg.png"
+      content="https://evoluteur.github.io/van-tharp-marble-game/screenshot-vtmg.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Screenshot of the Van Tharp's Marble Game Simulator"
     />
     <!-- Structured Data -->
     <script type="application/ld+json">
