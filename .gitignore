@@ -1,0 +1,15 @@
+node_modules
+
+build
+coverage
+
+public/bundle.js
+
+.claude
+*-nogit/
+*-nogit.*
+
+Thumbs.db
+Desktop.ini
+.DS_Store
+.idea

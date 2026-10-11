@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://www.googletagmanager.com" />
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=G-063933E3C2"
+></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+  gtag("js", new Date());
+  gtag("config", "G-063933E3C2");
+</script>
+<link rel="icon" href="favicon.png">
+<title>Marble Game Simulator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="css/simulator.css">
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="label">Position-sizing lab</div>
+    <h1>Marble Game Simulator</h1>
+    <p class="lede">Each marble in the bag is a trade outcome in R, multiples of the amount you risk. Marbles are drawn with replacement. Every simulated player sees the same draws, so any difference in results comes from position sizing alone.</p>
+    <div class="strip" id="strip" aria-hidden="true"></div>
+  </header>
+
+  <div class="grid">
+    <div class="col">
+      <section class="panel" aria-labelledby="bag-h">
+        <div class="panel-head">
+          <h2 id="bag-h">The bag</h2>
+          <select id="preset" aria-label="Bag">
+            <option value="custom" hidden>Custom bag</option>
+            <option value="tharp" selected>Van Tharp's marble game (default)</option>
+            <option value="tail">Low win rate, big winners</option>
+            <option value="disaster">High win rate, rare disaster</option>
+            <option value="twoone">Coin flip at 2:1</option>
+            <option value="negative">Negative expectancy</option>
+          </select>
+        </div>
+        <div class="bag-hd label"><span></span><span>R-multiple</span><span>Marbles</span><span style="text-align:right">Share</span><span></span></div>
+        <div class="bag-rows" id="bagRows"></div>
+        <div class="row-actions"><button id="addRow" type="button">Add marble type</button></div>
+        <div class="facts">
+          <div class="fact"><div class="label">Expectancy</div><div class="v" id="fE">–</div></div>
+          <div class="fact"><div class="label">SQN</div><div class="v" id="fSQN">–</div></div>
+          <div class="fact"><div class="label">Win rate</div><div class="v" id="fWin">–</div></div>
+          <div class="fact"><div class="label">Growth-optimal risk</div><div class="v" id="fKelly">–</div></div>
+        </div>
+        <p class="hint" id="bagNote"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="rules-h">
+        <h2 id="rules-h">Rules of the game</h2>
+        <div class="field">
+          <label class="label" for="riskNum">Risk per draw (1R)</label>
+          <div class="risk-line">
+            <input type="range" id="riskRange" min="0.25" max="25" step="0.25" value="1" aria-label="Risk per draw slider">
+            <input type="number" id="riskNum" min="0.05" max="100" step="0.25" value="1">
+          </div>
+          <span class="hint">Percent of equity put at risk on each marble.</span>
+        </div>
+        <div class="field">
+          <label class="label" for="model">Sizing model</label>
+          <select id="model">
+            <option value="pct">Percent of current equity</option>
+            <option value="fixed">Fixed amount (percent of starting equity)</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="label" for="draws">Draws per game</label><input type="number" id="draws" min="1" max="1000" step="1" value="100"></div>
+          <div class="field"><label class="label" for="runs">Simulated players</label><input type="number" id="runs" min="10" max="5000" step="10" value="1000"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label class="label" for="start">Starting equity ($)</label><input type="number" id="start" min="100" step="1000" value="100000"></div>
+          <div class="field"><label class="label" for="ruin">Ruin at loss of (%)</label><input type="number" id="ruin" min="1" max="100" step="5" value="50"></div>
+        </div>
+        <span class="hint">A player who loses this much of starting equity is ruined and stops playing.</span>
+        <div class="row-actions"><button class="primary" id="reroll" type="button">Draw a new set of marbles</button></div>
+      </section>
+    </div>
+
+    <div class="col">
+      <section class="panel" aria-labelledby="res-h">
+        <div class="panel-head">
+          <h2 id="res-h">Results</h2>
+          <p id="resSub"></p>
+        </div>
+        <div class="tiles">
+          <div class="tile"><span class="label">Median ending equity</span><span class="v" id="tMed">–</span><span class="s" id="tMedS"></span></div>
+          <div class="tile"><span class="label">Players who made money</span><span class="v" id="tProfit">–</span><span class="s">ended above start</span></div>
+          <div class="tile"><span class="label">Players ruined</span><span class="v" id="tRuin">–</span><span class="s" id="tRuinS"></span></div>
+          <div class="tile"><span class="label">Median max drawdown</span><span class="v" id="tDD">–</span><span class="s">peak to trough</span></div>
+        </div>
+        <div class="pctl" id="pctl"></div>
+        <div>
+          <div class="panel-head" style="margin-bottom:8px">
+            <span class="label">Equity across all players · log scale</span>
+            <div class="legend"><span><i style="background:var(--accent)"></i>Median</span><span><i style="background:var(--accent-soft);border:1px solid var(--accent)"></i>10th–90th pct</span><span><i style="background:var(--muted);opacity:.5"></i>Individual players</span></div>
+          </div>
+          <canvas id="fan" role="img" aria-label="Equity paths across simulated players"></canvas>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="sweep-h">
+        <div class="panel-head">
+          <h2 id="sweep-h">Same marbles, different bet sizes</h2>
+          <p>Every risk level replays the identical draws.</p>
+        </div>
+        <canvas id="sweep" role="img" aria-label="Median ending equity and chance of ruin by risk per draw"></canvas>
+        <div class="legend"><span><i style="background:var(--accent)"></i>Your risk setting</span><span><i style="background:var(--win)"></i>Growth-optimal risk</span><span><i style="background:var(--loss)"></i>Chance of ruin</span></div>
+        <p class="note" id="sweepNote"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="play-h">
+        <div class="panel-head">
+          <h2 id="play-h">Play by hand</h2>
+          <p>Pull marbles one at a time using your current bag and rules.</p>
+        </div>
+        <div class="play">
+          <div style="display:grid;gap:14px;align-content:start">
+            <div class="bagviz" id="bagviz" aria-label="Marbles in the bag"></div>
+            <div class="row-actions">
+              <button class="primary" id="draw1" type="button">Draw a marble</button>
+              <button id="draw10" type="button">Draw 10</button>
+              <button id="playReset" type="button">Start over</button>
+            </div>
+          </div>
+          <div style="display:grid;gap:12px;align-content:start;min-width:0">
+            <div class="drawn">
+              <div class="marble lg" id="bigMarble" style="--c:var(--line)"></div>
+              <div>
+                <div class="r num" id="bigR">—</div>
+                <div class="hint" id="bigPL">Draw to begin</div>
+              </div>
+            </div>
+            <div class="facts" style="border-top:0;padding-top:0">
+              <div class="fact"><div class="label">Equity</div><div class="v" id="pEq">–</div></div>
+              <div class="fact"><div class="label">Draws · total R</div><div class="v" id="pN">0 · 0.0R</div></div>
+            </div>
+            <div class="tray" id="tray" aria-label="Marbles drawn so far"></div>
+            <div class="table-scroll">
+              <table class="log"><thead><tr><th>#</th><th>R</th><th>Risked</th><th>P/L</th><th>Equity</th></tr></thead><tbody id="logBody"></tbody></table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<script src="js/simulator.js"></script>
+</body>
+</html>
